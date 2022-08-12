@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Тестовое задание</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles/fontsConnect.css" rel="stylesheet" />
+    <link href="styles/reset.css" rel="stylesheet" />
+    <link href="styles/main.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="page">
+        <h1 class="main-title">Тестовое задание</h1>
+
+        <div class="table-of-contents">
+            <h2 class="table-of-contents__title">Содержание</h2>
+            <ul class="table-of-contents__list">
+                <li>
+                    <span data-nav="about-script" class="table-of-contents__link">О скрипте</span>
+                </li>
+                <li>
+                    <span data-nav="realisation" class="table-of-contents__link">Особенности реализации</span>
+                </li>
+                <li>
+                    <span data-nav="script-use" class="table-of-contents__link">Использование скрипта</span>
+                </li>
+            </ul>
+        </div>
+
+        <section class="text-section about-script">
+            <h2 class="text-section__title">О скрипте</h2>
+
+            <p>
+                Данный скрипт предназначен для сжатия изображений. 
+                Изображения берутся из папки /src/assets, сжимаются, после чего складываются в папку <span class="text-accent">/src/compressed-images</span>.
+            </p>
+
+            <p>
+                Название папки с исходными изображениями, при необходимости, можно изменить. Но после изменения названия самой папки 
+                также необходимо изменить значение переменной <span class="text-accent">origDirectoryName</span>, определённой в самом начале кода скрипта. 
+                В ней хранится название папки с исходниками и именно данная переменная используется для построения путей к файлам в скрипте. 
+            </p>
+
+            <p>
+                Папка с обработанными изображениями создаётся заново при каждом запуске скрипта. Название данной папки также можно поменять.
+                Для этого необходимо изменить значение переменной <span class="text-accent">destDirectoryName</span>, определённой в самом начале скрипта.
+            </p>
+
+            <p>
+                Скрипт обрабатывает только файлы с расширениями <span class="text-accent">.jpg, .png, .webp.</span> Другие форматы API для сжатия изображений не принимает.
+            </p>
+        </section>
+
+        <section class="text-section realisation">
+            <h2 class="text-section__title">Особенности реализации</h2>
+
+            <p>
+                Код скрипта написан на языке JavaScript и предназначен для выполнения на платформе Node.js. 
+                В скрипте использованы следующие модули:
+            </p>
+
+            <ul class="realisation__list">
+                <li><span class="list-accent">fs</span> - модуль для работы с файловой системой</li>
+                <li><span class="list-accent">path</span> - модуль для работы с путями к файлам и папкам</li>
+                <li><span class="list-accent">dotenv</span> - модуль для возможности добавления своих переменных окружения</li>
+                <li><span class="list-accent">tinify</span> - модуль для сжатия изображений</li>
+            </ul>
+
+            <p>
+                Сжатие в скрипте реализовано при помощи TinyPNG API. Ссылка на документацию к API - 
+                <a href="https://tinypng.com/developers/reference" target="_blank">https://tinypng.com/developers/reference</a>.
+            </p>
+
+            <p>
+                Язык программирования JavaScript я выбрал потому что это единственный скриптовый язык который я знаю. Изучать я его начал так как это самый популярный язык для написания фронтенда сайтов.
+                Платформу Node.js я выбрал потому что это единственный известный мне инструмент, где используя язык JavaScript можно работать с файловой системой.
+            </p>
+
+            <p>
+                Путь к каталогу с исходными файлами я решил задать перемонной в самом скрипте, так как на мой взгляд такой вариант более гибкий. Человеку, который будет использовать данный скрипт не придётся ничего дополнительно конфигурировать.
+                Путь к каталогу со сжатыми изображениями, возможно, бы было удобнее задавать параметром командной строки, но я решил записать его в переменную в скрипте для единства реализации. (Чтоб было реализовано по аналогии с путём к каталогу с исходными файлами).
+                При желании названия папок с исходными и обработанными изображениями можно поменять. Как это сделать описано в разделе "О скрипте".
+            </p>
+
+            <p>
+                Ключ для TinyPNG API хранится в переменной окружения, в файле /.env. Именно таким образом и рекомендуется хранить подобные данные. 
+                Переменные окружения хранятся вне кода скрипта, 
+                а файл с ними не загружают в git-репозиторий. За счёт этого достигается безопасность хранимых в них данных.
+            </p>
+
+            <p>
+                Алгоритм работы скрипта можно описать следующим образом: в начале работы скрипт проверяет, создана ли папка, 
+                в которую будут складываться обработанные изображения. Если создана - она удаляется. Затем она создаётся заново. 
+                Далее, скрипт считывает файлы из папки, где лежат исходные изображения. Он проходится по всем файлам и проверяет: 
+                если очередной проверяемый файл является изображением подходящего формата, 
+                а также весит более 100 килобайт - он сжимается и итоговый файл складывается в папку со всеми сжатыми картинками.
+            </p>
+        </section>
+
+        <section class="text-section script-use">
+            <h2 class="text-section__title">Использование скрипта</h2>
+
+            <p>Для того, чтобы сжать изображения при помощи данного скрипта необходимо выполнить следующие действия:</p>
+
+            <ul class="script-use__list">
+                <li>Установить себе на компьютер платформу <a style="margin-left:5px;" target="_blank" href="https://nodejs.org/en/">Node.js</a></li>
+                <li>Скачать исходники скрипта из репозитория <a style="margin-left:5px;" href="https://github.com/lionel-lynch/Test-task-script" target="_blank">https://github.com/lionel-lynch/Test-task-script</a></li>
+                <li>Поместить изображения, которые хотите сжать в папку <span style="margin:0 5px;" class="text-accent">/src/assets</span> (в этой папке уже есть тестовые изображения)</li>
+                <li>В терминале Вашей ОС перейти в папку с исходниками и по очереди запустить команды</li>
+            </ul>
+
+            <div class="script-use__command">
+                <div>npm install</div>
+                <div>node src/index.js</div>
+            </div>
+
+            <p>Сжатые изображения будут расположены в папке <span class="text-accent">/src/compressed-images</span></p>
+        </section>
+    </div>
+
+    <script src="js/pageScroll.js"></script>
+</body>
+</html>
